@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>ガチャ結果</h1>
-<p>
-    <img src="/static/images/{{ max_data.max_name }}.png" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
-</p>
 {% if datas|length > 1 %}
+    <p>
+        <img src="/static/images/{{ max_data.max_name }}.png" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
+    </p>
     {% for data in datas %}
         <div>
             <!-- style="margin-top: 10px; vertical-align: bottom; width: 200px;">-->
