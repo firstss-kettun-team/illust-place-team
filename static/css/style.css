@@ -62,7 +62,7 @@ body{
 
 /*--ランディング--*/
 .home-inner {
-  background-image:url(images/ガチャ.png);
+  background-image:url(../images/ガチャ.png);
   opacity:0.7;
 }
 .caption {
