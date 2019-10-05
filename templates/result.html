@@ -1,14 +1,29 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>ガチャ結果</h1>
-<div>
-    <p>
-        <img src="/static/images/{{ data.name }}.png" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
-    </p>
-    <!-- style="margin-top: 10px; vertical-align: bottom; width: 200px;">-->
-    <p>[{{ data.rarity }}]{{ data.name }} が当たりました！</p>
-</div>
+<p>
+    <img src="/static/images/{{ max_data.max_name }}.png" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
+</p>
+{% if datas|length > 1 %}
+    {% for data in datas %}
+        <div>
+            <!-- style="margin-top: 10px; vertical-align: bottom; width: 200px;">-->
+            <p>[{{ data.rarity }}]{{ data.name }} が当たりました！</p>
+        </div>
+    {% endfor %}
+{% else %}
+    {% for data in datas %}
+        <div>
+            <p>
+                <img src="/static/images/{{ data.name }}.png" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
+            </p>
+            <!-- style="margin-top: 10px; vertical-align: bottom; width: 200px;">-->
+            <p>[{{ data.rarity }}]{{ data.name }} が当たりました！</p>
+        </div>
+    {% endfor %}
+{% endif %}
 <a href="/select" class="btn"> もう一度ガチャを回す </a>
+<a href="/select10" class="btn"> もう一度10連ガチャを回す </a>
 <br>
 <a href="/"> トップページに戻る </a>
 {% endblock %}

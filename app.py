@@ -14,7 +14,8 @@ auth = HTTPBasicAuth()
 
 #ページ間でのdataの受け渡しがうまくいかないので、グローバル変数にする
 data = {}
-data_10 = []
+datas = []#複数形が違うのはご愛嬌
+max_data = {}
 
 #ログイン、DB機能は保留
 """
@@ -53,22 +54,67 @@ def logout():
 
 @app.route('/select')
 def select():
+    global data
+    global datas
+    data = [] #一応初期化
+    datas = [] #初期化
     rarities = ["N", "R", "SR", "UR"]
-    weight = [0.8, 0.17, 0.029, 0.001]
+    weight = [0.8, 0.17, 0.025, 0.005]
     picked_rarity = np.random.choice(rarities, p=weight)
 
     #picked_rarityの中に入っている文字列と同じ名前の関数を呼び出す
     result_name = eval(picked_rarity)()
 
     #辞書型でデータを作成
-    global data
     data = {'name':result_name, 'rarity':picked_rarity}
+    datas.append(data)
+    return redirect(url_for("result"))
+
+#10連ガチャするいい方法が思いつかないのでページを分ける
+@app.route('/select10')
+def select10():
+    global data
+    global datas
+    global max_data
+    data = [] #一応初期化
+    datas = [] #初期化
+    max_data = {} #初期化
+    mxr = 0
+    for _ in range(10):
+        rarities = ["N", "R", "SR", "UR"]
+        weight = [0.8, 0.17, 0.025, 0.005]
+        picked_rarity = np.random.choice(rarities, p=weight)
+        #rarityを数値化
+        if picked_rarity == "N":
+            temp_rarity = 1
+        elif picked_rarity == "R":
+            temp_rarity = 2
+        elif picked_rarity == "SR":
+            temp_rarity = 3
+        else:
+            temp_rarity = 4
+
+        #picked_rarityの中に入っている文字列と同じ名前の関数を呼び出す
+        result_name = eval(picked_rarity)()
+
+        ###picked_rarityの最も高いものを選ぶ
+        if mxr < temp_rarity:
+            mxr = temp_rarity
+            max_rarity = picked_rarity
+            max_name = result_name
+
+        #辞書型でデータを作成
+        data = {'name':result_name, 'rarity':picked_rarity, 'max_name':max_name, 'max_rarity':max_rarity}
+        datas.append(data)
+
+    max_data = {'max_name':max_name}
     return redirect(url_for("result"))
 
 @app.route('/result')
 def result():
-    global data
-    return render_template("result.html", data=data)
+    global datas
+    global max_data
+    return render_template("result.html", datas=datas, max_data=max_data)
 
 def N():
     #いらすとや画像の名前を文字列で入れていく
