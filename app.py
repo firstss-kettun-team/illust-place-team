@@ -12,7 +12,8 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 #ページ間でのdataの受け渡しがうまくいかないので、グローバル変数にする
-global data
+data = {}
+data_10 = []
 
 #ログイン、DB機能は保留
 """
