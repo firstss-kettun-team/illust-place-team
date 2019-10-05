@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>ガチャ結果</h1>
+<p>
+    <img src="/static/images/{{ max_data.max_name }}.png" style="margin-top: 10px; vertical-align: bottom; width: 200px;">
+</p>
+<div>
+    <p>URが出るまでガチャをした結果…</p>
+    <p>{{ datas|length }} 回で {{ max_data.max_name }} が当たりました！</p>
+</div>
+<a href="/select_stillUR" class="btn"> もう一度URが出るまでガチャを回す </a>
+<br>
+<a href="/"> トップページに戻る </a>
+{% endblock %}

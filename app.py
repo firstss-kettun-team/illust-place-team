@@ -110,11 +110,44 @@ def select10():
     max_data = {'max_name':max_name}
     return redirect(url_for("result"))
 
+@app.route('/select_stillUR')
+def select_stillUR():
+    global data
+    global datas
+    global max_data
+    data = [] #一応初期化
+    datas = [] #初期化
+    max_data = {} #初期化
+    while True:
+        rarities = ["N", "R", "SR", "UR"]
+        weight = [0.8, 0.17, 0.025, 0.005]
+        picked_rarity = np.random.choice(rarities, p=weight)
+
+        #picked_rarityの中に入っている文字列と同じ名前の関数を呼び出す
+        result_name = eval(picked_rarity)()
+
+        #辞書型でデータを作成
+        data = {'name':result_name, 'rarity':picked_rarity}
+        datas.append(data)
+
+        if picked_rarity == "UR":
+            max_name = result_name
+            break
+
+    max_data = {'max_name':max_name}
+    return redirect(url_for("result_stillUR"))
+
 @app.route('/result')
 def result():
     global datas
     global max_data
     return render_template("result.html", datas=datas, max_data=max_data)
+
+@app.route('/result_stillUR')
+def result_stillUR():
+    global datas
+    global max_data
+    return render_template("stillUR.html", datas=datas, max_data=max_data)
 
 def N():
     #いらすとや画像の名前を文字列で入れていく
